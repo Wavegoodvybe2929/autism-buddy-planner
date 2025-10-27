@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { RoutineCard } from "./RoutineCard";
+import { AddTaskDialog } from "./AddTaskDialog";
 import { Sun, Sunset, Moon } from "lucide-react";
 
 interface Task {
@@ -34,9 +35,49 @@ export const DayPlanner = () => {
     ));
   };
 
-  const morningTasks = tasks.filter((_, idx) => idx < 4);
-  const afternoonTasks = tasks.filter((_, idx) => idx >= 4 && idx < 8);
-  const eveningTasks = tasks.filter((_, idx) => idx >= 8);
+  const addTask = (newTask: { title: string; icon: string; time: string; period: string }) => {
+    const task: Task = {
+      id: Date.now().toString(),
+      title: newTask.title,
+      icon: newTask.icon,
+      time: newTask.time,
+      completed: false,
+    };
+    
+    setTasks([...tasks, task]);
+  };
+
+  // Filter tasks by time
+  const getMorningTasks = () => {
+    return tasks.filter((task) => {
+      const hour = parseInt(task.time.split(':')[0]);
+      const isPM = task.time.includes('PM');
+      const hour24 = isPM && hour !== 12 ? hour + 12 : !isPM && hour === 12 ? 0 : hour;
+      return hour24 >= 5 && hour24 < 12;
+    });
+  };
+
+  const getAfternoonTasks = () => {
+    return tasks.filter((task) => {
+      const hour = parseInt(task.time.split(':')[0]);
+      const isPM = task.time.includes('PM');
+      const hour24 = isPM && hour !== 12 ? hour + 12 : !isPM && hour === 12 ? 0 : hour;
+      return hour24 >= 12 && hour24 < 18;
+    });
+  };
+
+  const getEveningTasks = () => {
+    return tasks.filter((task) => {
+      const hour = parseInt(task.time.split(':')[0]);
+      const isPM = task.time.includes('PM');
+      const hour24 = isPM && hour !== 12 ? hour + 12 : !isPM && hour === 12 ? 0 : hour;
+      return hour24 >= 18 || hour24 < 5;
+    });
+  };
+
+  const morningTasks = getMorningTasks();
+  const afternoonTasks = getAfternoonTasks();
+  const eveningTasks = getEveningTasks();
 
   const completedCount = tasks.filter(t => t.completed).length;
   const totalCount = tasks.length;
@@ -46,7 +87,10 @@ export const DayPlanner = () => {
     <div className="min-h-screen bg-background">
       <header className="bg-card border-b border-border sticky top-0 z-10 shadow-sm">
         <div className="container mx-auto px-4 py-6">
-          <h1 className="text-3xl font-bold text-foreground mb-2">My Daily Plan</h1>
+          <div className="flex items-center justify-between mb-2">
+            <h1 className="text-3xl font-bold text-foreground">My Daily Plan</h1>
+            <AddTaskDialog onAddTask={addTask} />
+          </div>
           <div className="flex items-center gap-4">
             <div className="flex-1 bg-muted rounded-full h-3 overflow-hidden">
               <div 
