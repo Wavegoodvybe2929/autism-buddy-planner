@@ -12,18 +12,22 @@ interface Task {
 }
 
 const initialTasks: Task[] = [
-  { id: "1", title: "Wake Up & Stretch", icon: "🌅", time: "7:00 AM", completed: false },
-  { id: "2", title: "Brush Teeth", icon: "🪥", time: "7:15 AM", completed: false },
-  { id: "3", title: "Eat Breakfast", icon: "🍳", time: "7:30 AM", completed: false },
-  { id: "4", title: "Get Dressed", icon: "👕", time: "8:00 AM", completed: false },
-  { id: "5", title: "School/Work Time", icon: "📚", time: "9:00 AM", completed: false },
-  { id: "6", title: "Lunch Break", icon: "🥗", time: "12:00 PM", completed: false },
-  { id: "7", title: "Afternoon Activity", icon: "🎨", time: "2:00 PM", completed: false },
-  { id: "8", title: "Free Time", icon: "🎮", time: "4:00 PM", completed: false },
-  { id: "9", title: "Dinner Time", icon: "🍽️", time: "6:00 PM", completed: false },
-  { id: "10", title: "Evening Routine", icon: "🛁", time: "7:30 PM", completed: false },
-  { id: "11", title: "Bedtime Story", icon: "📖", time: "8:30 PM", completed: false },
-  { id: "12", title: "Sleep", icon: "🌙", time: "9:00 PM", completed: false },
+  { id: "1", title: "Wake up and stretch", icon: "🌅", time: "7:00 AM", completed: false },
+  { id: "2", title: "Brush teeth", icon: "🪥", time: "7:15 AM", completed: false },
+  { id: "3", title: "Hydrate", icon: "💧", time: "7:30 AM", completed: false },
+  { id: "4", title: "Feed cats", icon: "🐱", time: "7:45 AM", completed: false },
+  { id: "5", title: "Breakfast", icon: "🍳", time: "8:00 AM", completed: false },
+  { id: "6", title: "Work out", icon: "💪", time: "8:30 AM", completed: false },
+  { id: "7", title: "Play with cats", icon: "🐈", time: "9:30 AM", completed: false },
+  { id: "8", title: "Get ready for work", icon: "👔", time: "10:00 AM", completed: false },
+  { id: "9", title: "Go to work", icon: "💼", time: "10:30 AM", completed: false },
+  { id: "10", title: "Lunch break", icon: "🥗", time: "12:00 PM", completed: false },
+  { id: "11", title: "Drive home", icon: "🚗", time: "5:00 PM", completed: false },
+  { id: "12", title: "Feed cats again", icon: "🐱", time: "5:30 PM", completed: false },
+  { id: "13", title: "Free time", icon: "🎮", time: "6:00 PM", completed: false },
+  { id: "14", title: "Dinner", icon: "🍽️", time: "7:00 PM", completed: false },
+  { id: "15", title: "Relax in bed", icon: "🛏️", time: "8:30 PM", completed: false },
+  { id: "16", title: "Go to sleep", icon: "🌙", time: "9:30 PM", completed: false },
 ];
 
 export const DayPlanner = () => {
