@@ -1,6 +1,7 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { RoutineCard } from "./RoutineCard";
 import { AddTaskDialog } from "./AddTaskDialog";
+import { PresetSelector } from "./PresetSelector";
 import { Sun, Sunset, Moon } from "lucide-react";
 
 interface Task {
@@ -11,7 +12,13 @@ interface Task {
   completed: boolean;
 }
 
-const initialTasks: Task[] = [
+interface Preset {
+  id: string;
+  name: string;
+  tasks: Task[];
+}
+
+const defaultTasks: Task[] = [
   { id: "1", title: "Wake up and stretch", icon: "🌅", time: "7:00 AM", completed: false },
   { id: "2", title: "Brush teeth", icon: "🪥", time: "7:15 AM", completed: false },
   { id: "3", title: "Hydrate", icon: "💧", time: "7:30 AM", completed: false },
@@ -30,8 +37,43 @@ const initialTasks: Task[] = [
   { id: "16", title: "Go to sleep", icon: "🌙", time: "9:30 PM", completed: false },
 ];
 
+const initialPresets: Preset[] = [
+  { id: "default", name: "My Main Routine", tasks: defaultTasks },
+];
+
 export const DayPlanner = () => {
-  const [tasks, setTasks] = useState<Task[]>(initialTasks);
+  const [presets, setPresets] = useState<Preset[]>(() => {
+    const saved = localStorage.getItem("dayPlannerPresets");
+    return saved ? JSON.parse(saved) : initialPresets;
+  });
+
+  const [currentPresetId, setCurrentPresetId] = useState<string>(() => {
+    const saved = localStorage.getItem("currentPresetId");
+    return saved || "default";
+  });
+
+  const [tasks, setTasks] = useState<Task[]>(() => {
+    const currentPreset = presets.find(p => p.id === currentPresetId);
+    return currentPreset ? currentPreset.tasks : defaultTasks;
+  });
+
+  useEffect(() => {
+    localStorage.setItem("dayPlannerPresets", JSON.stringify(presets));
+  }, [presets]);
+
+  useEffect(() => {
+    localStorage.setItem("currentPresetId", currentPresetId);
+  }, [currentPresetId]);
+
+  useEffect(() => {
+    setPresets(prevPresets =>
+      prevPresets.map(preset =>
+        preset.id === currentPresetId
+          ? { ...preset, tasks }
+          : preset
+      )
+    );
+  }, [tasks, currentPresetId]);
 
   const toggleTask = (id: string) => {
     setTasks(tasks.map(task => 
@@ -49,6 +91,23 @@ export const DayPlanner = () => {
     };
     
     setTasks([...tasks, task]);
+  };
+
+  const handleSelectPreset = (presetId: string) => {
+    const preset = presets.find(p => p.id === presetId);
+    if (preset) {
+      setCurrentPresetId(presetId);
+      setTasks(preset.tasks);
+    }
+  };
+
+  const handleCreatePreset = (name: string, currentTasks: Task[]) => {
+    const newPreset: Preset = {
+      id: Date.now().toString(),
+      name,
+      tasks: currentTasks.map(task => ({ ...task, completed: false })),
+    };
+    setPresets([...presets, newPreset]);
   };
 
   // Filter tasks by time
@@ -91,9 +150,18 @@ export const DayPlanner = () => {
     <div className="min-h-screen bg-background">
       <header className="bg-card border-b border-border sticky top-0 z-10 shadow-sm">
         <div className="container mx-auto px-4 py-6">
-          <div className="flex items-center justify-between mb-2">
+          <div className="flex items-center justify-between mb-4">
             <h1 className="text-3xl font-bold text-foreground">My Daily Plan</h1>
-            <AddTaskDialog onAddTask={addTask} />
+            <div className="flex items-center gap-3">
+              <PresetSelector
+                presets={presets}
+                currentPresetId={currentPresetId}
+                currentTasks={tasks}
+                onSelectPreset={handleSelectPreset}
+                onCreatePreset={handleCreatePreset}
+              />
+              <AddTaskDialog onAddTask={addTask} />
+            </div>
           </div>
           <div className="flex items-center gap-4">
             <div className="flex-1 bg-muted rounded-full h-3 overflow-hidden">
