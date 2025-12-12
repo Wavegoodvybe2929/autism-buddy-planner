@@ -3,6 +3,7 @@ import { RoutineCard } from "./RoutineCard";
 import { AddTaskDialog } from "./AddTaskDialog";
 import { PresetSelector } from "./PresetSelector";
 import { ScheduledEventDialog } from "./ScheduledEventDialog";
+import { ScheduledEventsManager } from "./ScheduledEventsManager";
 import { useCurrentTime } from "@/hooks/useCurrentTime";
 import { Sun, Sunset, Moon, Clock, Calendar } from "lucide-react";
 
@@ -159,6 +160,16 @@ export const DayPlanner = () => {
     setScheduledEvents([...scheduledEvents, newEvent]);
   };
 
+  const updateScheduledEvent = (updatedEvent: ScheduledEvent) => {
+    setScheduledEvents(scheduledEvents.map(event => 
+      event.id === updatedEvent.id ? updatedEvent : event
+    ));
+  };
+
+  const deleteScheduledEvent = (id: string) => {
+    setScheduledEvents(scheduledEvents.filter(event => event.id !== id));
+  };
+
   const handleSelectPreset = (presetId: string) => {
     const preset = presets.find(p => p.id === presetId);
     if (preset) {
@@ -239,6 +250,11 @@ export const DayPlanner = () => {
                 onCreatePreset={handleCreatePreset}
               />
               <ScheduledEventDialog onAddEvent={addScheduledEvent} />
+              <ScheduledEventsManager 
+                events={scheduledEvents}
+                onUpdateEvent={updateScheduledEvent}
+                onDeleteEvent={deleteScheduledEvent}
+              />
               <AddTaskDialog onAddTask={addTask} />
             </div>
           </div>
