@@ -2,7 +2,9 @@ import { useState, useEffect } from "react";
 import { RoutineCard } from "./RoutineCard";
 import { AddTaskDialog } from "./AddTaskDialog";
 import { PresetSelector } from "./PresetSelector";
-import { Sun, Sunset, Moon } from "lucide-react";
+import { ScheduledEventDialog } from "./ScheduledEventDialog";
+import { useCurrentTime } from "@/hooks/useCurrentTime";
+import { Sun, Sunset, Moon, Clock, Calendar } from "lucide-react";
 
 interface Task {
   id: string;
@@ -10,6 +12,15 @@ interface Task {
   icon: string;
   time: string;
   completed: boolean;
+  isScheduledEvent?: boolean;
+}
+
+interface ScheduledEvent {
+  id: string;
+  title: string;
+  icon: string;
+  time: string;
+  date: string;
 }
 
 interface Preset {
@@ -42,6 +53,8 @@ const initialPresets: Preset[] = [
 ];
 
 export const DayPlanner = () => {
+  const { formattedDate, formattedTime, dateKey } = useCurrentTime();
+  
   const [presets, setPresets] = useState<Preset[]>(() => {
     const saved = localStorage.getItem("dayPlannerPresets");
     return saved ? JSON.parse(saved) : initialPresets;
@@ -52,10 +65,55 @@ export const DayPlanner = () => {
     return saved || "default";
   });
 
+  const [scheduledEvents, setScheduledEvents] = useState<ScheduledEvent[]>(() => {
+    const saved = localStorage.getItem("scheduledEvents");
+    return saved ? JSON.parse(saved) : [];
+  });
+
   const [tasks, setTasks] = useState<Task[]>(() => {
     const currentPreset = presets.find(p => p.id === currentPresetId);
     return currentPreset ? currentPreset.tasks : defaultTasks;
   });
+
+  const [lastCheckedDate, setLastCheckedDate] = useState<string>(() => {
+    return localStorage.getItem("lastCheckedDate") || "";
+  });
+
+  // Save scheduled events to localStorage
+  useEffect(() => {
+    localStorage.setItem("scheduledEvents", JSON.stringify(scheduledEvents));
+  }, [scheduledEvents]);
+
+  // Check for scheduled events that match today's date
+  useEffect(() => {
+    if (dateKey !== lastCheckedDate) {
+      const todayEvents = scheduledEvents.filter(event => event.date === dateKey);
+      
+      if (todayEvents.length > 0) {
+        const newTasks: Task[] = todayEvents.map(event => ({
+          id: `event-${event.id}`,
+          title: event.title,
+          icon: event.icon,
+          time: event.time,
+          completed: false,
+          isScheduledEvent: true,
+        }));
+
+        setTasks(prevTasks => {
+          // Avoid duplicates by checking if event already added
+          const existingEventIds = prevTasks.filter(t => t.isScheduledEvent).map(t => t.id);
+          const uniqueNewTasks = newTasks.filter(t => !existingEventIds.includes(t.id));
+          return [...prevTasks, ...uniqueNewTasks];
+        });
+
+        // Remove added events from scheduled events
+        setScheduledEvents(prev => prev.filter(event => event.date !== dateKey));
+      }
+
+      setLastCheckedDate(dateKey);
+      localStorage.setItem("lastCheckedDate", dateKey);
+    }
+  }, [dateKey, lastCheckedDate, scheduledEvents]);
 
   useEffect(() => {
     localStorage.setItem("dayPlannerPresets", JSON.stringify(presets));
@@ -91,6 +149,14 @@ export const DayPlanner = () => {
     };
     
     setTasks([...tasks, task]);
+  };
+
+  const addScheduledEvent = (event: { title: string; icon: string; time: string; date: string }) => {
+    const newEvent: ScheduledEvent = {
+      id: Date.now().toString(),
+      ...event,
+    };
+    setScheduledEvents([...scheduledEvents, newEvent]);
   };
 
   const handleSelectPreset = (presetId: string) => {
@@ -144,15 +210,27 @@ export const DayPlanner = () => {
 
   const completedCount = tasks.filter(t => t.completed).length;
   const totalCount = tasks.length;
-  const progressPercentage = (completedCount / totalCount) * 100;
+  const progressPercentage = totalCount > 0 ? (completedCount / totalCount) * 100 : 0;
 
   return (
     <div className="min-h-screen bg-background">
       <header className="bg-card border-b border-border sticky top-0 z-10 shadow-sm">
         <div className="container mx-auto px-4 py-6">
-          <div className="flex items-center justify-between mb-4">
-            <h1 className="text-3xl font-bold text-foreground">My Daily Plan</h1>
-            <div className="flex items-center gap-3">
+          <div className="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4 mb-4">
+            <div>
+              <h1 className="text-3xl font-bold text-foreground">My Daily Plan</h1>
+              <div className="flex items-center gap-4 mt-2 text-muted-foreground">
+                <div className="flex items-center gap-2">
+                  <Calendar className="h-4 w-4" />
+                  <span className="text-sm font-medium">{formattedDate}</span>
+                </div>
+                <div className="flex items-center gap-2">
+                  <Clock className="h-4 w-4" />
+                  <span className="text-sm font-mono">{formattedTime}</span>
+                </div>
+              </div>
+            </div>
+            <div className="flex flex-wrap items-center gap-3">
               <PresetSelector
                 presets={presets}
                 currentPresetId={currentPresetId}
@@ -160,9 +238,20 @@ export const DayPlanner = () => {
                 onSelectPreset={handleSelectPreset}
                 onCreatePreset={handleCreatePreset}
               />
+              <ScheduledEventDialog onAddEvent={addScheduledEvent} />
               <AddTaskDialog onAddTask={addTask} />
             </div>
           </div>
+          
+          {/* Upcoming scheduled events indicator */}
+          {scheduledEvents.length > 0 && (
+            <div className="mb-4 p-3 bg-primary/10 rounded-lg border border-primary/20">
+              <p className="text-sm text-primary font-medium">
+                📅 {scheduledEvents.length} upcoming event{scheduledEvents.length !== 1 ? 's' : ''} scheduled
+              </p>
+            </div>
+          )}
+          
           <div className="flex items-center gap-4">
             <div className="flex-1 bg-muted rounded-full h-3 overflow-hidden">
               <div 
