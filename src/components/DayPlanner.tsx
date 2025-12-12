@@ -71,13 +71,28 @@ export const DayPlanner = () => {
     return saved ? JSON.parse(saved) : [];
   });
 
-  const [tasks, setTasks] = useState<Task[]>(() => {
-    const currentPreset = presets.find(p => p.id === currentPresetId);
-    return currentPreset ? currentPreset.tasks : defaultTasks;
+  const [lastResetDate, setLastResetDate] = useState<string>(() => {
+    return localStorage.getItem("lastResetDate") || "";
   });
 
-  const [lastCheckedDate, setLastCheckedDate] = useState<string>(() => {
-    return localStorage.getItem("lastCheckedDate") || "";
+  const [tasks, setTasks] = useState<Task[]>(() => {
+    const savedTasks = localStorage.getItem("currentDayTasks");
+    const savedDate = localStorage.getItem("lastResetDate") || "";
+    const today = new Date().toISOString().split('T')[0];
+    
+    // If it's a new day, reset to preset tasks
+    if (savedDate !== today) {
+      const currentPreset = presets.find(p => p.id === currentPresetId);
+      return currentPreset ? currentPreset.tasks.map(t => ({ ...t, completed: false })) : defaultTasks.map(t => ({ ...t, completed: false }));
+    }
+    
+    // Otherwise load saved tasks for today
+    if (savedTasks) {
+      return JSON.parse(savedTasks);
+    }
+    
+    const currentPreset = presets.find(p => p.id === currentPresetId);
+    return currentPreset ? currentPreset.tasks : defaultTasks;
   });
 
   // Save scheduled events to localStorage
@@ -85,36 +100,45 @@ export const DayPlanner = () => {
     localStorage.setItem("scheduledEvents", JSON.stringify(scheduledEvents));
   }, [scheduledEvents]);
 
-  // Check for scheduled events that match today's date
+  // Save current day tasks to localStorage
   useEffect(() => {
-    if (dateKey !== lastCheckedDate) {
+    localStorage.setItem("currentDayTasks", JSON.stringify(tasks));
+  }, [tasks]);
+
+  // Daily reset at midnight and inject scheduled events
+  useEffect(() => {
+    if (dateKey !== lastResetDate) {
+      // Reset all tasks to uncompleted from the current preset
+      const currentPreset = presets.find(p => p.id === currentPresetId);
+      const baseTasks = currentPreset 
+        ? currentPreset.tasks.map(t => ({ ...t, completed: false, isScheduledEvent: false }))
+        : defaultTasks.map(t => ({ ...t, completed: false }));
+      
+      // Find scheduled events for today
       const todayEvents = scheduledEvents.filter(event => event.date === dateKey);
       
+      // Convert scheduled events to tasks
+      const eventTasks: Task[] = todayEvents.map(event => ({
+        id: `event-${event.id}`,
+        title: event.title,
+        icon: event.icon,
+        time: event.time,
+        completed: false,
+        isScheduledEvent: true,
+      }));
+      
+      // Combine base tasks with today's events
+      setTasks([...baseTasks, ...eventTasks]);
+      
+      // Remove the events that were added (they're now part of today's routine)
       if (todayEvents.length > 0) {
-        const newTasks: Task[] = todayEvents.map(event => ({
-          id: `event-${event.id}`,
-          title: event.title,
-          icon: event.icon,
-          time: event.time,
-          completed: false,
-          isScheduledEvent: true,
-        }));
-
-        setTasks(prevTasks => {
-          // Avoid duplicates by checking if event already added
-          const existingEventIds = prevTasks.filter(t => t.isScheduledEvent).map(t => t.id);
-          const uniqueNewTasks = newTasks.filter(t => !existingEventIds.includes(t.id));
-          return [...prevTasks, ...uniqueNewTasks];
-        });
-
-        // Remove added events from scheduled events
         setScheduledEvents(prev => prev.filter(event => event.date !== dateKey));
       }
-
-      setLastCheckedDate(dateKey);
-      localStorage.setItem("lastCheckedDate", dateKey);
+      
+      setLastResetDate(dateKey);
+      localStorage.setItem("lastResetDate", dateKey);
     }
-  }, [dateKey, lastCheckedDate, scheduledEvents]);
+  }, [dateKey, lastResetDate, scheduledEvents, presets, currentPresetId]);
 
   useEffect(() => {
     localStorage.setItem("dayPlannerPresets", JSON.stringify(presets));
