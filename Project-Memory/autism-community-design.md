@@ -72,6 +72,21 @@
 
 ## Implementation Strategies
 
+### Desktop App Autism-Friendly Design Implementation
+
+**Desktop-Specific Accommodations** (Tauri Phase 2 Implementation):
+- **Window Behavior**: Predictable window sizing (1200x800) and centering to reduce spatial uncertainty
+- **System Integration**: Respectful desktop presence without intrusive notifications or unexpected behaviors
+- **App Identity**: Clear, community-focused naming ("Autism Buddy Planner") avoiding clinical or deficit-focused language
+- **Offline Reliability**: Local-first architecture eliminating internet dependency anxiety
+- **Platform Consistency**: Uniform experience across macOS, Windows, Linux for routine portability
+
+**Technical Autism Accommodations**:
+- **Startup Predictability**: Consistent window positioning and sizing on launch
+- **Visual Stability**: Desktop app prevents browser-based interface disruptions (zoom changes, font overrides)
+- **System Respect**: Integration with operating system accessibility settings (high contrast, font scaling)
+- **Data Security**: Local data storage reducing privacy concerns common in autism community
+
 ### Customization and Flexibility
 **Interface Adaptation**:
 - Multiple visual themes and layouts
