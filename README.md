@@ -1,73 +1,192 @@
-# Welcome to your Lovable project
+# Autism Buddy Planner
 
-## Project info
+> **Creating technology that adapts to autism spectrum needs, not the other way around.**
 
-**URL**: https://lovable.dev/projects/4c44a353-fadf-459c-aaaf-d1fafb226644
+A React/TypeScript web and desktop application designed to provide autism-friendly daily routine management through visual, structured, and calming interfaces. Built with accessibility-first principles and neurodiversity-affirming design.
 
-## How can I edit this code?
+## 🎯 Project Mission
 
-There are several ways of editing your application.
+Autism Buddy Planner serves the autism community's unique needs for predictable, customizable daily planning tools that reduce anxiety and support routine adherence. Our technology adapts to users rather than requiring users to adapt to technology constraints.
 
-**Use Lovable**
+## ✨ Key Features
 
-Simply visit the [Lovable Project](https://lovable.dev/projects/4c44a353-fadf-459c-aaaf-d1fafb226644) and start prompting.
+### 🗓️ Daily Routine Management
+- **Time-Based Organization**: Morning, Afternoon, and Evening task sections
+- **Visual Task Cards**: Large emoji icons with clear, accessible typography  
+- **Task Completion Tracking**: Visual feedback for completed tasks
+- **Daily Reset Logic**: Automatic daily routine refresh functionality
 
-Changes made via Lovable will be committed automatically to this repo.
+### 📋 Preset Systems
+- **Routine Templates**: Pre-configured task sets for common daily routines
+- **Customizable Presets**: User-defined routine templates for personalization
+- **Quick Application**: One-click preset application to current day
 
-**Use your preferred IDE**
+### 📅 Scheduled Events
+- **Event Management**: Time-specific event scheduling and tracking
+- **Integration**: Seamless integration with daily task workflow
+- **Visual Indicators**: Clear event representation within daily view
 
-If you want to work locally using your own IDE, you can clone this repo and push changes. Pushed changes will also be reflected in Lovable.
+### ♿ Autism-Specific Design
+- **Sensory-Friendly Interface**: Reduced visual clutter and calming color schemes
+- **Predictable Navigation**: Consistent UI patterns and interaction models
+- **Customization Options**: Flexible interface adaptation to individual preferences
+- **Routine Preservation**: Design choices that support established routines
 
-The only requirement is having Node.js & npm installed - [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating)
+## 🚀 Technology Stack
 
-Follow these steps:
+### Frontend
+- **React 18.3.1** - Modern functional components with hooks
+- **TypeScript** - Type safety and enhanced developer experience
+- **Vite** - Fast development and optimized production builds
 
-```sh
-# Step 1: Clone the repository using the project's Git URL.
-git clone <YOUR_GIT_URL>
+### UI Framework & Styling
+- **shadcn/ui** - Comprehensive, accessible component library
+- **Tailwind CSS** - Utility-first styling with autism-friendly customization
+- **Radix UI** - Accessibility-first component foundations
+- **Lucide React** - Consistent iconography system
 
-# Step 2: Navigate to the project directory.
-cd <YOUR_PROJECT_NAME>
+### Desktop App (✅ Production Ready)
+- **Tauri v2.9.6** - Cross-platform desktop framework with Rust backend
+- **Custom Branding** - Autism-friendly app icon and visual identity
+- **Security Implementation** - Local-only data storage, minimal permissions
+- **Performance Optimized** - Rust build optimizations for fast, reliable performance
 
-# Step 3: Install the necessary dependencies.
-npm i
+### Development Tools
+- **Bun** - Fast package manager and runtime (use `bun`, not npm/yarn)
+- **ESLint** - Code quality and consistency
+- **Agent Framework** - 11 specialist AI agents for coordinated development
 
-# Step 4: Start the development server with auto-reloading and an instant preview.
-npm run dev
+## 💻 Development Setup
+
+### Prerequisites
+- **Bun** (latest version)
+- **Rust** (for desktop app development)
+- **VS Code** (recommended with rust-analyzer extension)
+
+### Installation
+
+```bash
+# Clone the repository
+git clone <repository-url>
+cd autism-buddy-planner
+
+# Install dependencies (use Bun, not npm/yarn)
+bun install
+
+# Start development server
+bun run dev
 ```
 
-**Edit a file directly in GitHub**
+### Available Commands
 
-- Navigate to the desired file(s).
-- Click the "Edit" button (pencil icon) at the top right of the file view.
-- Make your changes and commit the changes.
+```bash
+# Web Development
+bun run dev          # Start web development server (http://localhost:8080)
+bun run build        # Build for production
+bun run preview      # Preview production build
+bun run lint         # Run ESLint
 
-**Use GitHub Codespaces**
+# Desktop App Development
+bun run tauri:dev    # Start desktop app in development mode
+bun run tauri:build  # Build desktop app for production
+```
 
-- Navigate to the main page of your repository.
-- Click on the "Code" button (green button) near the top right.
-- Select the "Codespaces" tab.
-- Click on "New codespace" to launch a new Codespace environment.
-- Edit files directly within the Codespace and commit and push your changes once you're done.
+## 📊 Development Status
 
-## What technologies are used for this project?
+### ✅ Completed (December 2025)
+- **Core Features**: Daily planner, task management, presets, scheduled events
+- **UI Framework**: Complete shadcn/ui + Tailwind CSS implementation
+- **Data Management**: Local storage with daily reset functionality
+- **Desktop App**: Production-ready Tauri integration with custom branding
+- **Agent Framework**: 11 specialist agents for coordinated development
+- **Security**: Comprehensive privacy-focused security implementation
 
-This project is built with:
+### 🔄 In Progress
+- **Accessibility Enhancement**: WCAG 2.1 AA+ implementation with autism-specific features
+- **Testing Infrastructure**: Comprehensive test suite with accessibility scenarios
 
-- Vite
-- TypeScript
-- React
-- shadcn-ui
-- Tailwind CSS
+### 📅 Upcoming
+- **Documentation**: User guides and technical documentation
+- **Performance Optimization**: Anxiety-reducing performance enhancements
 
-## How can I deploy this project?
+## 🎨 Design Principles
 
-Simply open [Lovable](https://lovable.dev/projects/4c44a353-fadf-459c-aaaf-d1fafb226644) and click on Share -> Publish.
+### Technology Adapts to Users
+- Flexible interface customization options
+- Multiple interaction modalities  
+- Individual sensory preference accommodation
+- Preserved user autonomy and control
 
-## Can I connect a custom domain to my Lovable project?
+### Neurodiversity-Affirming
+- Autism-specific feature development
+- Community input integration in design decisions
+- Strength-based interface design
+- Individual preference prioritization
 
-Yes, you can!
+### Routine Support
+- Consistent navigation and interaction models
+- Routine preservation during updates
+- Predictable interface behavior
+- Stable visual and functional patterns
 
-To connect a domain, navigate to Project > Settings > Domains and click Connect Domain.
+## 🤝 AI Agent Framework
 
-Read more here: [Setting up a custom domain](https://docs.lovable.dev/features/custom-domain#custom-domain)
+This project uses a sophisticated 11-agent specialist system coordinated by a central orchestrator:
+
+### Core Development Agents
+- **React/TypeScript Specialist** - Primary implementation
+- **Debug Specialist** - Problem resolution and troubleshooting  
+- **Test Specialist** - Testing strategy and implementation
+- **Documentation Specialist** - Technical and user documentation
+
+### Autism-Focused Specialists  
+- **Autism Support Specialist** - Community advocacy and requirements
+- **Accessibility Specialist** - WCAG compliance and assistive technology
+- **UX/UI Specialist** - Visual design and user experience
+- **Frontend Architecture Specialist** - Scalable architecture planning
+
+### Quality & Performance
+- **Performance Engineering Specialist** - Optimization and smooth UX
+- **Component Quality Specialist** - shadcn/ui integration consistency
+- **Security Reviewer** - Data privacy and local storage security
+
+All development follows **orchestrator-first** coordination through `Agent-Config/orchestrator.md`.
+
+## 📁 Project Structure
+
+```
+autism-buddy-planner/
+├── src/
+│   ├── components/          # React components
+│   ├── hooks/              # Custom React hooks  
+│   ├── lib/                # Utility functions
+│   └── pages/              # Page components
+├── src-tauri/              # Desktop app backend (Rust)
+├── Agent-Config/           # AI agent coordination system
+├── Project-Memory/         # Project context and history
+├── Project-Documentation/  # Technical documentation
+└── public/                # Static assets
+```
+
+## 🔒 Security & Privacy
+
+- **Local-Only Data Storage** - No external data transmission
+- **Minimal Permissions** - Desktop app uses capabilities-based security
+- **Content Security Policy** - Comprehensive CSP implementation
+- **Privacy-First Design** - Autism community data protection
+
+## 📚 Documentation
+
+- **Agent Framework**: See `Agent-Config/` for development coordination system
+- **Project Memory**: See `Project-Memory/` for project context and decisions
+- **Security Implementation**: See `Project-Documentation/TAURI_SECURITY_IMPLEMENTATION.md`
+
+## 🌟 Community-Centered Development
+
+This project prioritizes autism community needs in all development decisions. Features are developed through community input, accessibility-first design, and neurodiversity-affirming principles.
+
+**Contributing**: All contributions are coordinated through the agent framework system to ensure autism community benefit and accessibility compliance.
+
+## 📄 License
+
+This project is dedicated to serving the autism community with open, accessible technology.
