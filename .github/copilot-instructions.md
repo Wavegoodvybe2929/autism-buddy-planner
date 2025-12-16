@@ -1,5 +1,11 @@
 # Autism Buddy Planner - AI Agent Development Guide
 
+> **🚀 QUICK START WORKFLOW**: For immediate productivity, follow this mandatory sequence:
+> 1. **Orchestrator First**: Check `Agent-Config/orchestrator.md` for workflow coordination
+> 2. **Project Status**: Review `Project-Memory/project-overview.md` for current status and priorities
+> 3. **Agent Selection**: Use orchestrator routing matrix for appropriate specialist assignment
+> 4. **Integration Patterns**: Follow established agent collaboration patterns from `Agent-Config/agent-hooks.md`
+
 ## Project Overview
 
 **Mission**: Creating autism-friendly daily routine management through predictable, customizable, sensory-friendly interfaces.
@@ -9,11 +15,14 @@ This is a React 18 + TypeScript + Vite application using shadcn/ui components, d
 ## Technology Stack & Architecture
 
 - **Frontend**: React 18.3.1 + TypeScript + Vite (with React-SWC)
+- **Desktop Integration**: Tauri v2 capability
 - **UI Framework**: shadcn/ui + Radix UI primitives + Tailwind CSS
 - **State**: React hooks + localStorage (intentionally simple, no external state library)
 - **Build**: Vite with `@` alias pointing to `src/`
 - **Package Manager**: Bun (not npm/yarn)
-- **Branch**: `Tauri-Wrap` (preparing for desktop app conversion)
+- **Branch**: `Tauri-Wrap` (desktop app integration branch)
+
+*For current project status and feature completion, see `Project-Memory/project-overview.md`*
 
 ## Key Development Patterns
 
@@ -55,6 +64,58 @@ const [tasks, setTasks] = useState<Task[]>(() => {
 - Components are in `src/components/ui/` - these are shadcn generated, don't modify directly
 - Use `components.json` for shadcn configuration
 - Custom components use shadcn primitives: `<Card>`, `<Button>`, `<Dialog>`, etc.
+
+## **Project Memory System**
+
+**CRITICAL**: The `Project-Memory/` folder contains the complete project state, context, and historical decisions that inform all development work.
+
+### **Mandatory Project Memory Consultation**
+
+#### **Project Memory Integration Workflow**
+```markdown
+⚠️ BEFORE ANY DEVELOPMENT WORK:
+1. Check `Project-Memory/project-overview.md` for current status and priorities
+2. Review `Project-Memory/technical-architecture.md` for implementation constraints
+3. Consult `Project-Memory/autism-community-design.md` for community requirements
+4. Reference `Project-Memory/development-history.md` for context and decisions
+5. Verify dependencies in `Project-Memory/dependencies-analysis.md`
+```
+
+### **Project Memory File Structure & Usage**
+
+#### **Core Project Context**
+- **`project-overview.md`** - **Current project status and mission**
+  - **Usage**: Start here for any new work - contains current phase, completion status, priorities
+  - **Key Info**: Feature completion status, development phases, community goals
+  - **Current Status**: Phase 3.1 Complete (Tauri icon preparation), accessibility enhancement in progress
+
+- **`technical-architecture.md`** - **Technology stack and implementation patterns**
+  - **Usage**: Reference for all technical decisions and implementation approaches
+  - **Key Info**: React/TypeScript patterns, component architecture, state management, Tauri desktop integration
+  - **Critical Details**: Bun package manager usage, shadcn/ui integration, localStorage patterns
+
+#### **Community-Centered Development Context**
+- **`autism-community-design.md`** - **Autism community requirements and design principles**
+  - **Usage**: All feature work must align with autism community needs documented here
+  - **Key Info**: Sensory considerations, routine support requirements, accessibility standards
+  - **Validation**: Every UI change must consider sensory impact and routine preservation
+
+#### **Development Continuity**
+- **`development-history.md`** - **Project evolution and significant milestones**
+  - **Usage**: Understand why decisions were made and avoid repeating resolved issues
+  - **Key Info**: Feature evolution, technical decisions, community feedback integration
+  - **Context**: Provides background for current architecture and approach choices
+
+- **`dependencies-analysis.md`** - **Package dependencies and technical constraints**
+  - **Usage**: Reference before adding new dependencies or making package changes
+  - **Key Info**: Current packages, version constraints, autism-friendly dependency choices
+  - **Constraints**: Bun-first approach, accessibility-focused package selection
+
+#### **Agent System Context**
+- **`agent-framework-summary.md`** - **Agent system implementation and workflows**
+  - **Usage**: Understand how agent coordination works and integration patterns
+  - **Key Info**: Agent collaboration patterns, workflow implementation, community validation integration
+  - **Integration**: How project memory and agent config systems work together
 
 ## Multi-Agent Framework System
 
@@ -574,20 +635,31 @@ interface Task {
 4. **Maintain Daily Reset Logic**: Critical for autism routine support consistency
 5. **Follow Local Storage Patterns**: Established patterns in `DayPlanner.tsx`
 6. **Validate with Specialists**: Quality gates through appropriate agent configurations
+7. **Update Project Memory**: MANDATORY - Update `Project-Memory/` files after each workload completion
 
-### **Agent Configuration Reference Files**
+### **MANDATORY Project Memory Update Protocol**
+```markdown
+⚠️ AFTER EVERY DEVELOPMENT WORKLOAD:
+1. Update `Project-Memory/project-overview.md` with completion status
+2. Add entry to `Project-Memory/development-history.md` with work summary
+3. Update `Project-Memory/agent-framework-summary.md` if agents were used
+4. See `Project-Memory/update-protocol.md` for complete procedures
+```
+
+### **Agent Configuration Reference Files (STATIC)**
 - `Agent-Config/orchestrator.md` - **START HERE ALWAYS** - Primary workflow coordinator
 - `Agent-Config/agent-intersection-matrix.md` - Complete ecosystem overview and collaboration patterns
 - `Agent-Config/agent-hooks.md` - Automatic integration system and lifecycle management
 - `Agent-Config/AGENT_CONFIG_FRAMEWORK_GUIDE.md` - Framework adaptation and usage guide
 
-### **Project Memory Reference Files**
+### **Project Memory Reference Files (DYNAMIC - Updated After Each Workload)**
 - `Project-Memory/project-overview.md` - Current project status, features, and development phases
 - `Project-Memory/technical-architecture.md` - Technology stack, patterns, and component analysis
 - `Project-Memory/autism-community-design.md` - Autism community requirements and design principles
 - `Project-Memory/development-history.md` - Project evolution and significant milestones
 - `Project-Memory/dependencies-analysis.md` - Package dependencies and technical constraints
 - `Project-Memory/agent-framework-summary.md` - Agent system implementation and workflows
+- `Project-Memory/update-protocol.md` - **UPDATE PROCEDURES** - Mandatory after each workload
 
 ## Common Gotchas
 
@@ -599,12 +671,10 @@ interface Task {
 - **Accessibility-first**: All UI changes must consider autism community needs and sensory sensitivities
 - **Hooks integration**: Agent hooks system automatically manages lifecycle, quality, and coordination
 - **Community validation**: All development includes autism community impact assessment
-- **Project memory consultation**: Always check current project status and constraints before starting work
-- **Agent intersection patterns**: Use agent-intersection-matrix.md to understand collaboration requirements
-- **Mandatory orchestrator routing**: No agent works independently - all tasks route through orchestrator first
-- **Autism community authority**: autism-support-specialist has final authority on community benefit and impact
-- **Quality gate enforcement**: Each specialist provides validation checkpoints, not optional reviews
-- **Context preservation**: Agent hooks system maintains task context throughout entire workflow
+- **PROJECT MEMORY UPDATES**: MANDATORY - Must update Project-Memory files after each workload
+- **Static vs Dynamic**: Agent-Config and copilot-instructions are static; Project-Memory is dynamic
+- **Update protocol**: Follow `Project-Memory/update-protocol.md` procedures after every development session
+- **Status references**: For current status, always check Project-Memory files, not Agent-Config
 - **Documentation requirements**: All significant changes require documentation specialist involvement
 
 ## Local Development Setup
@@ -617,3 +687,15 @@ bun run dev  # http://localhost:8080
 ```
 
 The app will automatically load with default daily routine tasks and reset daily for consistent user experience.
+
+## System Architecture Summary
+
+### **Static Reference Documentation (Never Updated for Status)**
+- **`Agent-Config/`**: Stable agent workflow patterns and capabilities
+- **`.github/copilot-instructions.md`**: Stable development patterns and guidelines
+- **Purpose**: How to work, not what's currently happening
+
+### **Dynamic Status Documentation (Updated After Each Workload)**
+- **`Project-Memory/`**: Current status, recent progress, active priorities, completion tracking
+- **Purpose**: Living record of accomplishments and current state
+- **Update Requirement**: Must be updated after every development activity

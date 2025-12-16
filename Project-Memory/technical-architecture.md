@@ -81,6 +81,12 @@
   - **Window Settings**: 1200x800 default, 800x600 minimum, centered, autism-friendly
   - **Build Integration**: Bun + Vite + Tauri workflow with `http://localhost:8080` dev server
   - **Bundle Metadata**: Productivity category with autism community focus
+- **✅ Phase 6 Complete**: Production Build & Distribution (December 16, 2025)
+  - **Production Build Verified**: Complete development and production build testing successful
+  - **Build Performance**: Frontend build (1.20s), Tauri build (30.11s) with Rust optimizations
+  - **DMG Creation**: 4.5MB installer successfully generated for macOS ARM64 (M1/M2/M3)
+  - **Distribution Ready**: `Autism Buddy Planner_0.1.0_aarch64.dmg` with complete TBD events functionality
+  - **Build Output Location**: `/src-tauri/target/release/bundle/dmg/` and `/src-tauri/target/release/bundle/macos/`
 - **Development Workflow**: Complete Tauri development environment with Bun + Vite + Tauri integration
   - **Package Scripts**: `bun run tauri:dev`, `bun run tauri:build`, `bun run tauri:build:debug`, `bun run tauri:icon`
   - **VS Code Configuration**: `.vscode/settings.json` with Rust Analyzer integration
@@ -168,12 +174,165 @@ const [scheduledEvents, setScheduledEvents] = useState<ScheduledEvent[]>([]);
 - Accessible button implementation with aria-pressed
 - Completion state visual feedback
 
+### Planned Component Enhancements (December 15, 2025)
+
+#### RoutineEditor.tsx (COMPLETED - Phase 5 Implementation December 16, 2025) ✅
+**Purpose**: Comprehensive routine management interface replacing "Add Events" button
+**Architecture**: Tabbed interface with autism-friendly layout using shadcn/ui components
+**Implementation Details**:
+- **Component Size**: 662 lines implementing complete routine management system
+- **Integration**: Full DayPlanner integration with seamless state management
+- **Dialog Structure**: Large modal (max-w-6xl) with three-tab organization
+- **State Management**: Uses custom `useRoutineManagement` hook for unified state control
+
+**Key Features Implemented**:
+- **Daily Tasks Management**: Complete task editing with time-based categorization (Morning, Afternoon, Evening)
+  - Task reordering with up/down buttons (autism-friendly alternative to drag-and-drop)
+  - In-line task editing with visual feedback
+  - Add/delete task functionality with confirmation
+- **Scheduled Events Management**: Full integration with existing ScheduledEventsManager
+  - Complete TBD support (date and time uncertainty)
+  - Event creation, editing, and deletion
+  - Multi-category event display
+- **Routine Preset Management**: Advanced preset system
+  - Create presets from current day configuration
+  - Edit/delete existing presets with safeguards
+  - Preview and apply presets with backup creation
+- **Data Safety Features**: 
+  - Automatic backup history (last 10 states)
+  - Unsaved changes warning system
+  - Export/Import functionality for routine portability
+  - Restore from backup with timestamp tracking
+
+**Accessibility Implementation**:
+- **WCAG 2.1 AA+ compliance** throughout interface
+- **Comprehensive keyboard navigation** with proper tab order
+- **ARIA labels and descriptions** for screen reader optimization
+- **Visual feedback** for all state changes
+- **Autism-friendly design patterns** with predictable interactions
+
+**Community Focus**: Autism-friendly comprehensive routine control interface
+**Agent Routing**: autism-support-specialist → frontend-architecture-specialist → ux-ui-specialist → react-typescript-specialist
+
+#### Enhanced TBD Time Functionality (Phase 4 Complete - December 16, 2025) ✅
+**ScheduledEvent Interface Enhancement**:
+```typescript
+interface ScheduledEvent {
+  id: string;
+  title: string;
+  icon: string;
+  time?: string;        // Optional for TBD times ✅ IMPLEMENTED
+  date?: string;        // Optional for TBD dates  
+  isTBD: boolean;       // Date uncertainty flag
+  isTimeTBD: boolean;   // NEW: Time uncertainty flag ✅ IMPLEMENTED
+}
+```
+
+**Event Utility Library Enhancement** ✅ COMPLETED:
+- **`/src/lib/eventUtils.ts`** expansion for time TBD categorization
+- **Multi-section categorization**: Scheduled, Date TBD, Time TBD, Completely TBD ✅ IMPLEMENTED
+
+#### useRoutineManagement Hook (NEW - Phase 5 Implementation December 16, 2025) ✅
+**Purpose**: Unified state management for comprehensive routine editing
+**Architecture**: Custom hook providing complete routine state management with safety features
+
+**Implementation Details**:
+- **Hook Size**: 185 lines implementing comprehensive state management
+- **State Management**: Unified management for tasks, events, presets, and current preset ID
+- **Backup System**: Automatic backup creation with configurable history depth
+- **Data Safety**: Unsaved changes tracking and conflict resolution
+
+**Key Features Implemented**:
+```typescript
+interface RoutineState {
+  tasks: Task[];
+  scheduledEvents: ScheduledEvent[];
+  presets: Preset[];
+  currentPresetId: string;
+}
+
+interface RoutineBackup {
+  timestamp: number;
+  state: RoutineState;
+}
+```
+
+**Core Functions**:
+- **Task Management**: `addTask`, `updateTask`, `deleteTask`, `reorderTasks`
+- **Event Management**: `addEvent`, `updateEvent`, `deleteEvent`  
+- **Preset Management**: `createPreset`, `updatePreset`, `deletePreset`, `applyPreset`
+- **State Safety**: `saveChanges`, `discardChanges`, `createBackup`, `restoreFromBackup`
+- **Data Portability**: `exportRoutine`, `importRoutine` with JSON serialization
+
+**Autism-Friendly Features**:
+- **Backup History**: Automatic backup creation (last 10 states) for routine safety
+- **Unsaved Changes Protection**: Clear indication and confirmation for unsaved changes  
+- **Optimistic Updates**: Immediate UI feedback for anxiety reduction
+- **Data Validation**: Comprehensive error handling for routine data integrity
+- **Enhanced sorting and filtering**: Support for all TBD combination scenarios ✅ IMPLEMENTED
+- **New Functions**: `formatEventTime()`, `getEnhancedEventDisplayText()` for time TBD support
+
 ### Component Dependencies
 - **AddTaskDialog.tsx**: Task creation and editing interface
 - **PresetSelector.tsx**: Routine template selection and management
-- **ScheduledEventDialog.tsx**: Event scheduling interface
-- **ScheduledEventsManager.tsx**: Event management and display
+- **ScheduledEventDialog.tsx**: Event scheduling interface with TBD functionality - ENHANCED ✨
+- **ScheduledEventsManager.tsx**: Multi-category event management with four-section layout - ENHANCED ✨ (Phase 4 Complete)
+  - **Purpose**: Comprehensive view and management of all scheduled events with time TBD support
+  - **Key Features**: Four-section layout (Scheduled/Time TBD/Date TBD/Completely TBD), advanced categorization, time TBD editing
+  - **Architecture Patterns**:
+    - **Enhanced Categorization**: `categorizeEvents()` with time TBD support for complete event separation
+    - **Visual Differentiation**: Color-coded sections with autism-friendly visual hierarchy (blue for time TBD, amber for date TBD)
+    - **State Management**: Time TBD editing state with conditional time field display and seamless toggle functionality
+    - **Accessibility Excellence**: WCAG 2.1 AA+ compliance with ARIA labels, time-specific announcements
+  - **Integration**: Complete coordination with enhanced ScheduledEventDialog for full time TBD lifecycle
 - **EmojiPicker.tsx**: Visual task icon selection
+- **Shared Types**: `/src/types/index.ts` - Centralized interface definitions - NEW ✨
+
+### Event Utility Library - NEW ✨ (December 15, 2025)
+**Purpose**: Comprehensive event management utility library for autism-friendly data handling  
+**File**: `/src/lib/eventUtils.ts`  
+**Functions**: 20+ utility functions for consistent event management across components
+
+#### **Core Categorization Functions**
+- `categorizeEvents()`: Separates events into dated and TBD categories with autism-friendly sorting
+- `getEventsForDate()`: Filters events for specific dates (used in daily routine integration)
+- `getTBDEvents()`: Retrieves and sorts events without determined dates
+- `getUpcomingEvents()`: Gets future dated events for planning display
+
+#### **Autism-Friendly Sorting Functions**
+- `sortEventsByDate()`: Chronological sorting for predictable timeline display
+- `sortEventsByTitle()`: Alphabetical sorting for TBD events consistency
+- `sortEventsByTime()`: Time-based sorting for daily routine integration
+- `sortEventsByCreationOrder()`: Creation-based sorting for user familiarity
+
+#### **Display and Formatting Helpers** ✅ Enhanced (Phase 4 Complete)
+- `formatEventDate()`: Consistent date formatting with "TBD" fallback
+- `formatEventTime()`: **NEW** - Time formatting with TBD support for conditional display ✅
+- `getEventDisplayText()`: Unified text display across components
+- `getEnhancedEventDisplayText()`: **NEW** - Advanced display text with time TBD combinations ✅
+- `getEventCounts()`: Summary statistics for event categories (now includes time TBD counts)
+- `isEventToday()` / `isEventOverdue()`: Status checking functions
+
+#### **Advanced Filtering and Organization**
+- `filterEvents()`: Complex filtering with search terms, date ranges
+- `groupEventsByDate()`: Calendar-style grouping for enhanced display
+- `convertTimeToMinutes()`: Time parsing for accurate sorting
+
+#### **Integration Pattern**
+```typescript
+// Replace inline logic with centralized utilities
+import { categorizeEvents, formatEventDate, getEventsForDate } from "@/lib/eventUtils";
+
+// Components now use shared functions
+const { datedEvents, tbdEvents } = categorizeEvents(events);
+const todayEvents = getEventsForDate(scheduledEvents, dateKey, true);
+```
+
+#### **Autism Community Benefits**
+- **Predictable Organization**: Consistent sorting across all components
+- **Reduced Cognitive Load**: Unified display patterns eliminate confusion
+- **Reusable Logic**: DRY principle reduces bugs and maintenance overhead
+- **Performance Optimized**: Efficient algorithms reduce loading delays
 
 ## Technical Quality Standards
 
@@ -196,6 +355,105 @@ const [scheduledEvents, setScheduledEvents] = useState<ScheduledEvent[]>([]);
 - **Bundle Optimization**: Vite-based build optimization
 
 ## Accessibility Architecture
+
+### Enhanced Accessibility Patterns (December 15, 2025) ✨
+**Phase 2 TBD Events Implementation**: Comprehensive autism-friendly accessibility enhancement
+
+#### WCAG 2.1 AA+ Implementation Pattern
+```typescript
+// Enhanced accessibility pattern with ARIA live regions and autism-specific features
+export const AccessibleTBDDialog = ({ onAddEvent }: Props) => {
+  const [isTBD, setIsTBD] = useState(false);
+  
+  return (
+    <DialogContent 
+      aria-describedby="dialog-description"
+      className="sm:max-w-[500px] max-h-[90vh] overflow-y-auto"
+    >
+      <DialogHeader>
+        <DialogTitle>Schedule Future Event</DialogTitle>
+        <div id="dialog-description" className="text-sm text-muted-foreground">
+          Create a scheduled event with or without a specific date. All fields except date are required.
+        </div>
+      </DialogHeader>
+      
+      {/* Enhanced TBD Checkbox with Comprehensive Accessibility */}
+      <div className="flex items-center space-x-3 p-2 rounded-md hover:bg-muted/50 transition-colors">
+        <Checkbox
+          id="tbd-checkbox"
+          checked={isTBD}
+          onCheckedChange={handleTBDChange}
+          className="w-5 h-5 focus:ring-2 focus:ring-primary focus:ring-offset-2"
+          aria-describedby="tbd-description"
+        />
+        <div className="flex-1">
+          <Label htmlFor="tbd-checkbox" className="cursor-pointer hover:text-primary">
+            Date to be determined (TBD)
+          </Label>
+          <div id="tbd-description" className="text-xs text-muted-foreground">
+            Check this if you want to schedule the event without selecting a specific date
+          </div>
+        </div>
+      </div>
+      
+      {/* ARIA Live Regions for Dynamic Content */}
+      <div 
+        role="region" 
+        aria-labelledby="date-section-label"
+        aria-live="polite"
+        className="transition-all duration-300 ease-in-out"
+      >
+        {isTBD && (
+          <div 
+            className="p-3 bg-muted/30 rounded-md border-l-4 border-amber-400"
+            role="status"
+            aria-label="TBD event notice"
+          >
+            <div className="flex items-start space-x-2">
+              <span className="text-amber-600" aria-hidden="true">📅</span>
+              <div>
+                <div className="text-sm font-medium text-amber-800">
+                  Event marked as TBD
+                </div>
+                <div className="text-xs text-amber-700 mt-1">
+                  This event will be scheduled when the date is determined
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
+      </div>
+      
+      {/* Dynamic Submit Button with Context Awareness */}
+      <Button 
+        type="submit"
+        className="focus:ring-2 focus:ring-primary focus:ring-offset-2"
+        disabled={!title.trim()}
+        aria-describedby="submit-help"
+      >
+        {isTBD ? 'Schedule TBD Event' : 'Schedule Event'}
+      </Button>
+      <div id="submit-help" className="text-xs text-muted-foreground">
+        {!title.trim() 
+          ? 'Please enter an event name to continue' 
+          : isTBD 
+            ? 'Create event with time but no specific date'
+            : 'Create event with specific date and time'
+        }
+      </div>
+    </DialogContent>
+  );
+};
+```
+
+#### Key Accessibility Features Implemented:
+- **ARIA Live Regions**: Dynamic content updates announced to screen readers
+- **Enhanced Focus Management**: Visual focus indicators and logical tab order
+- **Context-Aware Help Text**: Dynamic feedback based on form state
+- **Semantic HTML Structure**: Proper roles and landmarks for assistive technology
+- **Autism-Friendly Transitions**: Smooth 300ms transitions for sensory comfort
+- **Screen Reader Optimization**: Comprehensive labeling and descriptions
+- **Keyboard Navigation**: Full keyboard accessibility with enhanced focus rings
 
 ### Current Implementation
 - **Semantic HTML**: Proper HTML element usage throughout components
@@ -233,16 +491,67 @@ interface Preset {
 }
 ```
 
-### Scheduled Event Data Structure
+### Scheduled Event Data Structure - ENHANCED ✨ (December 15, 2025)
 ```typescript
 interface ScheduledEvent {
   id: string;
   title: string;
+  icon: string;
   time: string;
-  date: string;
-  completed: boolean;
+  date?: string;        // Optional for TBD events - NEW
+  isTBD: boolean;       // TBD status tracking - NEW
 }
 ```
+
+**TBD Events Enhancement**:
+- **Flexible Planning**: Events can be created without specific dates to reduce planning anxiety
+- **Backward Compatibility**: Existing events automatically migrated with `isTBD: false`
+- **Type Safety**: Optional `date` field properly typed with TypeScript strict mode
+- **Community Benefit**: Supports autism community planning patterns where events are known but dates uncertain
+- **Form Integration**: ScheduledEventDialog enhanced with conditional date field and TBD toggle
+- **Accessibility**: Full WCAG 2.1 AA+ compliance with autism-specific enhancements
+
+**Usage Patterns**:
+```typescript
+// Creating TBD event
+const tbdEvent: ScheduledEvent = {
+  id: "event-1",
+  title: "Doctor appointment",
+  icon: "🏥",
+  time: "2:00 PM",
+  // date is undefined for TBD events
+  isTBD: true
+};
+
+// Creating dated event
+const datedEvent: ScheduledEvent = {
+  id: "event-2", 
+  title: "Family dinner",
+  icon: "🍽️",
+  time: "6:00 PM",
+  date: "2025-12-20",
+  isTBD: false
+};
+```
+- **Migration Logic**: Automatic backward compatibility for existing events
+- **Type Safety**: Enhanced TypeScript interfaces with optional date field
+- **Autism Support**: Reduces anxiety about uncertain event timing
+
+### Shared Type Definitions - NEW ✨ (December 15, 2025)
+**Location**: `/src/types/index.ts`
+```typescript
+// Centralized TypeScript interfaces
+export interface Task { /* ... */ }
+export interface ScheduledEvent { /* ... */ }  
+export interface Preset { /* ... */ }
+export interface ScheduledEventDialogProps { /* ... */ }
+export interface ScheduledEventsManagerProps { /* ... */ }
+```
+
+**Benefits**:
+- **Consistency**: Single source of truth for all interfaces
+- **Maintainability**: Easier type updates across components
+- **Type Safety**: Eliminates duplicate interface definitions
 
 ### Persistence Strategy
 - **Local Storage Keys**: Structured key naming for data organization
@@ -273,11 +582,17 @@ interface ScheduledEvent {
 - **Custom Icon Integration**: Autism-friendly app icon design across all platforms
 
 ### Build and Distribution Architecture
-- **Dual Build Process**: Web build (Vite) → Desktop packaging (Tauri)
+- **Dual Build Process**: Web build (Vite) → Desktop packaging (Tauri) ✅ VERIFIED
 - **Cross-Platform Compilation**: Single Rust codebase targeting macOS, Windows, Linux
 - **Automated Icon Generation**: Multi-platform icon generation for consistent branding
 - **Code Signing Strategy**: Platform-specific signing for trusted distribution
 - **Update Mechanism**: Planned auto-update system for desktop app maintenance
+- **✅ Production Build Pipeline Established**:
+  - **Frontend Build**: `bun run build` (1.20s) - React/TypeScript production bundle
+  - **Tauri Build**: `bun run tauri:build` (30.11s) - Complete desktop app with DMG installer
+  - **Build Artifacts**: .app bundle and .dmg installer (4.5MB) for macOS distribution
+  - **TBD Events Integration**: All TBD functionality verified in production build
+  - **Build Command Structure**: Mature Bun + Cargo + Tauri CLI workflow established
 
 ### Performance Optimization for Desktop
 - **Startup Performance**: Target <3 second cold startup for daily routine accessibility

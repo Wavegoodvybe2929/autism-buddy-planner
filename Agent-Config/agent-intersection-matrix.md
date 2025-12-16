@@ -59,6 +59,10 @@
   - **Niche**: Anxiety-reducing performance optimization for autism community
   - **Current Focus**: Performance optimization during accessibility enhancement
 
+- **`build-deployment-specialist.md`** - Production build and distribution management
+  - **Niche**: Autism-friendly build pipeline and deployment coordination
+  - **Current Focus**: Production-ready desktop app distribution with TBD events functionality
+
 ### 🔗 **Agent Integration System**
 
 #### **🎯 Orchestrator-First Workflow**
@@ -122,6 +126,7 @@ Each agent has defined collaboration patterns:
 | **Testing Implementation** | `test-specialist.md` | `accessibility-specialist.md`, `autism-support-specialist.md` | Test coverage + accessibility validation |
 | **Architecture Planning** | `frontend-architecture-specialist.md` | `react-typescript-specialist.md`, `autism-support-specialist.md` | Scalability + autism-centered design |
 | **Documentation Creation** | `documentation-specialist.md` | `autism-support-specialist.md`, `ux-ui-specialist.md` | Community-friendly + technically accurate |
+| **Build & Deployment** | `build-deployment-specialist.md` | `react-typescript-specialist.md`, `autism-support-specialist.md` | Production quality + community impact assessment |
 
 ### 🛠 **Using the Agent Configuration System**
 
