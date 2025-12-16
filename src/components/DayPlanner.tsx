@@ -4,31 +4,12 @@ import { AddTaskDialog } from "./AddTaskDialog";
 import { PresetSelector } from "./PresetSelector";
 import { ScheduledEventDialog } from "./ScheduledEventDialog";
 import { ScheduledEventsManager } from "./ScheduledEventsManager";
+import { RoutineEditor } from "./RoutineEditor";
+import { Button } from "@/components/ui/button";
 import { useCurrentTime } from "@/hooks/useCurrentTime";
-import { Sun, Sunset, Moon, Clock, Calendar } from "lucide-react";
-
-interface Task {
-  id: string;
-  title: string;
-  icon: string;
-  time: string;
-  completed: boolean;
-  isScheduledEvent?: boolean;
-}
-
-interface ScheduledEvent {
-  id: string;
-  title: string;
-  icon: string;
-  time: string;
-  date: string;
-}
-
-interface Preset {
-  id: string;
-  name: string;
-  tasks: Task[];
-}
+import { Sun, Sunset, Moon, Clock, Calendar, Settings } from "lucide-react";
+import { Task, ScheduledEvent, Preset } from "@/types";
+import { getEventsForDate, getEventCounts } from "@/lib/eventUtils";
 
 const defaultTasks: Task[] = [
   { id: "1", title: "Wake up and stretch", icon: "🌅", time: "7:00 AM", completed: false },
@@ -68,8 +49,36 @@ export const DayPlanner = () => {
 
   const [scheduledEvents, setScheduledEvents] = useState<ScheduledEvent[]>(() => {
     const saved = localStorage.getItem("scheduledEvents");
-    return saved ? JSON.parse(saved) : [];
+    if (saved) {
+      try {
+        const parsedEvents = JSON.parse(saved) as Record<string, unknown>[];
+        // Migration logic: Add isTBD and isTimeTBD fields to existing events that don't have them
+        // This ensures backward compatibility with events created before TBD feature
+        return parsedEvents.map((event) => ({
+          id: event.id as string,
+          title: event.title as string,
+          icon: event.icon as string,
+          time: event.time as string | undefined, // Allow undefined for time TBD events
+          // If isTBD field doesn't exist, determine based on date field
+          isTBD: event.isTBD !== undefined 
+            ? event.isTBD as boolean
+            : !event.date, // TBD if no date field exists
+          // If isTimeTBD field doesn't exist, default to false for backward compatibility
+          isTimeTBD: event.isTimeTBD !== undefined
+            ? event.isTimeTBD as boolean
+            : false, // Default to false for existing events
+          // Ensure date field exists even if undefined
+          date: event.date as string | undefined,
+        }));
+      } catch (error) {
+        console.error("Error parsing scheduled events from localStorage:", error);
+        return [];
+      }
+    }
+    return [];
   });
+
+  const [isRoutineEditorOpen, setIsRoutineEditorOpen] = useState(false);
 
   const [lastResetDate, setLastResetDate] = useState<string>(() => {
     return localStorage.getItem("lastResetDate") || "";
@@ -114,8 +123,8 @@ export const DayPlanner = () => {
         ? currentPreset.tasks.map(t => ({ ...t, completed: false, isScheduledEvent: false }))
         : defaultTasks.map(t => ({ ...t, completed: false }));
       
-      // Find scheduled events for today
-      const todayEvents = scheduledEvents.filter(event => event.date === dateKey);
+      // Find scheduled events for today (only dated events, not TBD events)
+      const todayEvents = getEventsForDate(scheduledEvents, dateKey, true);
       
       // Convert scheduled events to tasks
       const eventTasks: Task[] = todayEvents.map(event => ({
@@ -176,7 +185,7 @@ export const DayPlanner = () => {
     setTasks([...tasks, task]);
   };
 
-  const addScheduledEvent = (event: { title: string; icon: string; time: string; date: string }) => {
+  const addScheduledEvent = (event: { title: string; icon: string; time: string; date?: string; isTBD: boolean }) => {
     const newEvent: ScheduledEvent = {
       id: Date.now().toString(),
       ...event,
@@ -209,6 +218,18 @@ export const DayPlanner = () => {
       tasks: currentTasks.map(task => ({ ...task, completed: false })),
     };
     setPresets([...presets, newPreset]);
+  };
+
+  const handleSaveRoutineChanges = (
+    newTasks: Task[],
+    newEvents: ScheduledEvent[],
+    newPresets: Preset[],
+    newPresetId: string
+  ) => {
+    setTasks(newTasks);
+    setScheduledEvents(newEvents);
+    setPresets(newPresets);
+    setCurrentPresetId(newPresetId);
   };
 
   // Filter tasks by time
@@ -273,22 +294,33 @@ export const DayPlanner = () => {
                 onSelectPreset={handleSelectPreset}
                 onCreatePreset={handleCreatePreset}
               />
-              <ScheduledEventDialog onAddEvent={addScheduledEvent} />
-              <ScheduledEventsManager 
-                events={scheduledEvents}
-                onUpdateEvent={updateScheduledEvent}
-                onDeleteEvent={deleteScheduledEvent}
-              />
-              <AddTaskDialog onAddTask={addTask} />
+              <Button 
+                onClick={() => setIsRoutineEditorOpen(true)}
+                className="flex items-center gap-2"
+                size="default"
+              >
+                <Settings className="h-4 w-4" />
+                Edit Routine
+              </Button>
             </div>
           </div>
           
           {/* Upcoming scheduled events indicator */}
           {scheduledEvents.length > 0 && (
             <div className="mb-4 p-3 bg-primary/10 rounded-lg border border-primary/20">
-              <p className="text-sm text-primary font-medium">
-                📅 {scheduledEvents.length} upcoming event{scheduledEvents.length !== 1 ? 's' : ''} scheduled
-              </p>
+              {(() => {
+                const eventCounts = getEventCounts(scheduledEvents);
+                return (
+                  <p className="text-sm text-primary font-medium">
+                    📅 {eventCounts.total} upcoming event{eventCounts.total !== 1 ? 's' : ''} scheduled
+                    {eventCounts.today > 0 && (
+                      <span className="ml-2 text-primary/80">
+                        ({eventCounts.today} today)
+                      </span>
+                    )}
+                  </p>
+                );
+              })()}
             </div>
           )}
           
@@ -364,6 +396,17 @@ export const DayPlanner = () => {
           </div>
         </section>
       </main>
+
+      {/* Routine Editor Modal */}
+      <RoutineEditor
+        isOpen={isRoutineEditorOpen}
+        onClose={() => setIsRoutineEditorOpen(false)}
+        initialTasks={tasks}
+        initialEvents={scheduledEvents}
+        initialPresets={presets}
+        initialPresetId={currentPresetId}
+        onSave={handleSaveRoutineChanges}
+      />
     </div>
   );
 };

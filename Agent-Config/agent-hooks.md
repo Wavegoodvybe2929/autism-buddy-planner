@@ -2,7 +2,7 @@
 
 > **🔧 CORE INTEGRATION SYSTEM**: This agent hooks system provides the foundational integration layer for all agent configurations in the autism-buddy-planner project. All agents automatically integrate with this system through the orchestrator.
 
-> **Last Updated**: December 12, 2025 - **Active Development Phase** - Supporting accessibility enhancement coordination
+> **📋 PROJECT MEMORY REFERENCE**: All hook workflows automatically reference current project status from `Project-Memory/project-overview.md` and align with autism community requirements from `Project-Memory/autism-community-design.md`.
 
 ## Agent Hooks System Overview
 

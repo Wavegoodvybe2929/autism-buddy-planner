@@ -2,7 +2,7 @@
 
 > **⚠️ MANDATORY ORCHESTRATOR ROUTING**: Before executing any work from this specialist config, **ALWAYS consult `agent-config/orchestrator.md` FIRST** for task routing, workflow coordination, multi-agent needs, current project context, and agent hooks integration.
 
-> **Last Updated**: December 12, 2025 - **Active Development Phase** - Leading accessibility enhancement initiatives
+> **📋 PROJECT STATUS REFERENCE**: Always reference `Project-Memory/project-overview.md` for current project status, completed features, and development phase priorities. Align all community advocacy work with documented project state.
 
 ## Specialist Role & Niche
 

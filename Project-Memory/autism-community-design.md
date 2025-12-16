@@ -48,8 +48,37 @@
 **Task Management**:
 - Clear task hierarchy and organization
 - Visual progress indicators and completion feedback
+- Routine structure preservation and customization
+- Executive function accommodation through structured interfaces
+
+**Time Management and Uncertainty Accommodation**:
+- **TBD (To Be Determined) Time Functionality**: Comprehensive support for events with uncertain timing
+  - **Anxiety Reduction**: Allows planning future events without forcing premature time decisions
+  - **Flexibility Accommodation**: Supports varying levels of time certainty (specific time, time TBD, date TBD, completely TBD)
+  - **Routine Stability**: Enables event planning that doesn't disrupt daily routine structure
+  - **Executive Function Support**: Reduces cognitive load by eliminating pressure to determine exact timing immediately
+  - **Multi-Section Organization**: Clear categorization of events by certainty level for reduced overwhelm
+  - **Visual Clarity**: Enhanced display formatting makes uncertainty levels immediately apparent
 - Simplified decision-making processes
 - Structured routine templates and presets
+
+**Event Planning & Future Scheduling** - ENHANCED ✨ (December 15, 2025):
+- **TBD (To Be Determined) Events**: Support for important events with uncertain dates
+- **Anxiety Reduction**: Track commitments without requiring immediate date specification  
+- **Flexible Planning**: Accommodates autism community planning patterns where dates may be uncertain
+- **Routine Preservation**: Maintains structure while allowing for uncertainty
+- **Clear Visual Indicators**: Distinct presentation of scheduled vs. TBD events
+- **Two-Section Layout**: Categorized display preventing cognitive confusion between certain and uncertain events
+  - **"Scheduled Events"**: Solid borders, calendar icons, date-based organization
+  - **"To Be Determined"**: Dashed borders, clock icons, orange "TBD Date" badges for immediate recognition
+- **Enhanced Accessibility**: WCAG 2.1 AA+ compliance with autism-specific improvements
+  - **ARIA Live Regions**: Dynamic content changes announced to screen readers
+  - **Context-Aware Help**: Form guidance that adapts to current state and user needs
+  - **Focus Management**: Enhanced visual focus indicators for clear navigation
+  - **Smooth Transitions**: 300ms autism-friendly transitions that reduce sensory overwhelm
+  - **Predictable Interactions**: Consistent form behavior that supports routine establishment
+  - **Visual Hierarchy**: Clear section separation with count badges and distinct styling
+- **Seamless Conversion**: Easy transition from TBD to scheduled events without disrupting workflow
 
 **Cognitive Load Reduction**:
 - Single-focus interface sections

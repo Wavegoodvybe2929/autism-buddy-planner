@@ -1,8 +1,15 @@
 {
-  "name": "vite_react_shadcn_ts",
+  "name": "autism-buddy-planner",
   "private": true,
-  "version": "0.0.0",
+  "version": "0.1.0",
   "type": "module",
+  "description": "Autism-friendly daily routine planner with desktop app support",
+  "author": "Wavegoodvybe2929",
+  "repository": {
+    "type": "git",
+    "url": "autism-buddy-planner"
+  },
+  "keywords": ["autism", "planner", "routine", "accessibility", "tauri", "react", "typescript"],
   "scripts": {
     "dev": "vite",
     "build": "vite build",
